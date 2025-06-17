@@ -9,6 +9,10 @@
     </p>
 </p>
 
+<p align="center">
+    <img src="./images/example.png" alt="example" width="100%">
+</p>
+
 
 This code aims to introduce a new training paradigm that first learns effective representations for downstream tasks, such as classification and information retrieval.
 
