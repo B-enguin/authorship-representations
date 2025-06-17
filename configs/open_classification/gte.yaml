@@ -1,0 +1,16 @@
+model:
+  encoder: "gte"
+  encoder_pooling: "last"
+  final_embedding_dim: 768
+
+training:
+  batch_size: 32
+
+data:
+  root: "dataset"
+  dataset: "blogtext"
+  variant: "all"
+  model_save_dir: "model"
+  model_save_freq: 1
+  
+  

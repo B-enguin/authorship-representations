@@ -1,0 +1,25 @@
+model:
+  encoder: "bert"
+  encoder_pooling: "cls"
+  final_embedding_dim: 768
+
+training:
+  train_batch: 16
+  unfrozen_train_batch: 8
+  test_batch: 64
+  max_length: 512
+  scale: 10.0
+  initial_lr: 2e-4
+  lr_decay: 0.99
+  unfrozen_lr: 2e-6
+  epochs: 30
+  freeze_until: 10
+
+data:
+  root: "dataset"
+  dataset: "blogtext"
+  variant: "all"
+  model_save_dir: "model"
+  model_save_freq: 1
+  
+  

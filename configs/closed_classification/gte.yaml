@@ -1,0 +1,22 @@
+model:
+  encoder: "gte"
+  encoder_pooling: "last"
+  final_embedding_dim: 768
+  num_classes: 10
+  num_classification_layers: 2
+
+training:
+  batch_size: 32
+  max_length: 512
+  initial_lr: 1e-3
+  lr_decay: 0.999
+  epochs: 20
+
+data:
+  root: "dataset"
+  dataset: "blogtext"
+  variant: "all"
+  model_save_dir: "model"
+  model_save_freq: 1
+  
+  
