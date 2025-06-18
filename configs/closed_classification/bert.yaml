@@ -15,7 +15,7 @@ training:
 data:
   root: "dataset"
   dataset: "blogtext"
-  variant: "all"
+  variant: "10"
   model_save_dir: "model"
   model_save_freq: 1
   

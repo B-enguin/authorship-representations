@@ -1,0 +1,9 @@
+cupy-cuda11x
+fastparquet
+kagglehub[pandas-datasets]
+nltk
+protobuf
+pyarrow
+torchpq
+transformers
+torcheval-nightly
