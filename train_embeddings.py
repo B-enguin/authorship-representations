@@ -24,6 +24,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Train embeddings")
     parser.add_argument(
+        "-c",
         "--config",
         type=str,
         default="configs/embeddings/gte.yaml",
@@ -43,8 +44,8 @@ def main():
     
     train_df = pd.read_csv(os.path.join(data_config["root"], f"{data_config['dataset']}_train_{data_config['variant']}.csv"))
     test_df = pd.read_csv(os.path.join(data_config["root"], f"{data_config['dataset']}_test_{data_config['variant']}.csv"))
-    TRAIN_CACHE = os.path.join(data_config["root"], f"{data_config['dataset']}_test_{data_config['variant']}_{train_config['model']}")
-    TEST_CACHE = os.path.join(data_config["root"], f"{data_config['dataset']}_test_{data_config['variant']}_{train_config['model']}")
+    TRAIN_CACHE = os.path.join(data_config["root"], f"{data_config['dataset']}_test_{data_config['variant']}_{model_config['encoder']}")
+    TEST_CACHE = os.path.join(data_config["root"], f"{data_config['dataset']}_test_{data_config['variant']}_{model_config['encoder']}")
 
     # Load Model and Tokenizer
     logger.warning("Loading Model and Tokenizer...")
@@ -203,8 +204,8 @@ def main():
                 mrr = torch.mean(rank)
 
                 logger.warning(f"Epoch [{epoch+1}/{epochs}], Step [{i+1}/{len(train_dataloader)}], Loss: {loss.item():.4f}, F1: {f1_score:.4f}, Acc: {acc:.4f}, MRR {mrr:.4f} , Time: {time.time() - start_time:.2f}s")
-                logger.warning(f"Mean Positive Distance{str(torch.mean(pos_dist).cpu().item())}")
-                logger.warning(f"Mean Negative Distance{str(torch.mean(neg_dist).cpu().item())}")
+                logger.warning(f"Mean Positive Distance {str(torch.mean(pos_dist).cpu().item())}")
+                logger.warning(f"Mean Negative Distance {str(torch.mean(neg_dist).cpu().item())}")
 
         scheduler.step()
     

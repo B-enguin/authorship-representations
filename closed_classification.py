@@ -4,6 +4,7 @@ import torch.nn as nn
 import pandas as pd
 import os
 from transformers import AutoModel, AutoTokenizer
+from torcheval.metrics.functional import multiclass_accuracy, multiclass_f1_score
 import numpy as np
 
 from utils.models import ClassificationModel, SiameseModel
@@ -188,7 +189,8 @@ def main():
 
             if (step+1) % 100 == 0:
                 model.eval()
-                accs = []
+                preds_list = []
+                labels_list = []
                 with torch.no_grad():
                     for j, batch in enumerate(test_loader):
                         if j >= 10:
@@ -207,13 +209,17 @@ def main():
 
                         logits = model(batch_input, stylometric_features)
                         preds = torch.argmax(logits, dim=1)
-                        accs.append((preds == labels).float().mean().item())
-                avg_acc = np.mean(accs)
-                logger.warning(f"Epoch {epoch+1}/{num_epochs}, Step {step+1}/{len(train_loader)}, Validation Accuracy: {avg_acc:.4f}")
+                        preds_list.append(preds.cpu())
+                        labels_list.append(labels.cpu())
+                avg_acc = multiclass_accuracy(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'])
+                macro_f1 = multiclass_f1_score(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'], average='macro')
+                micro_f1 = multiclass_f1_score(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'], average='micro')
+                logger.warning(f"Epoch {epoch+1}/{num_epochs}, Step {step+1}/{len(train_loader)}, Validation Accuracy: {avg_acc:.4f}, Macro F1: {macro_f1:.4f}, Micro F1: {micro_f1:.4f}")
 
         # Validation
         model.eval()
-        accs = []
+        preds_list = []
+        labels_list = []
         with torch.no_grad():
             for batch in test_loader:
                 labels, input_ids, attention_mask, stylometric_features = batch
@@ -230,10 +236,13 @@ def main():
 
                 logits = model(batch_input, stylometric_features)
                 preds = torch.argmax(logits, dim=1)
-                accs.append((preds == labels).float().mean().item())
+                preds_list.append(preds.cpu())
+                labels_list.append(labels.cpu())
 
-        avg_acc = np.mean(accs)
-        logger.warning(f"Epoch {epoch+1}/{num_epochs}, Validation Accuracy: {avg_acc:.4f}")
+        avg_acc = multiclass_accuracy(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'])
+        macro_f1 = multiclass_f1_score(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'], average='macro')
+        micro_f1 = multiclass_f1_score(torch.cat(preds_list), torch.cat(labels_list), num_classes=model_config['num_classes'], average='micro')
+        logger.warning(f"Epoch {epoch+1}/{num_epochs}, Validation Accuracy: {avg_acc:.4f}, Macro F1: {macro_f1:.4f}, Micro F1: {micro_f1:.4f}")
 
         if (epoch+1) % data_config['model_save_freq'] == 0:
             if not os.path.exists(f"{data_config['model_save_dir']}/closed_classification"):
