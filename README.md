@@ -20,9 +20,18 @@ This code aims to introduce a new training paradigm that first learns effective 
 1. Install the required dependencies, this could be done in a `venv` or conda enviroment
 ```bash
 pip install -r requirements.txt
-``` 
-2. Download the [IMDB1M Dataset](https://bridges.monash.edu/articles/dataset/Judgment_attribution_in_IMDb/28845983)
-3. Run the preprocessing script, this will download the remaining datasets and preprocess them for later tasks
+```
+2. Install CuPy
+```bash
+# CUDA v11.2 ~ 11.8
+pip install cupy-cuda11x
+# CUDA v12.x
+pip install cupy-cuda12x
+```
+More information can be found at the [installation intructions](https://docs.cupy.dev/en/stable/install.html#installing-cupy) for CuPy
+
+3. Download the [IMDB1M Dataset](https://bridges.monash.edu/articles/dataset/Judgment_attribution_in_IMDb/28845983)
+4. Run the preprocessing script, this will download the remaining datasets and preprocess them for later tasks
 ```bash
 python preprocess_data.py
 ```
