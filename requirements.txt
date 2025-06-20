@@ -7,3 +7,4 @@ pyarrow
 torchpq
 transformers
 torcheval-nightly
+scikit-image

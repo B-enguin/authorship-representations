@@ -293,6 +293,10 @@ def main():
                 os.makedirs(f"{data_config['model_save_dir']}/embedding")
             torch.save(model.state_dict(), f"{data_config['model_save_dir']}/embedding/{data_config['variant']}_{model_config['encoder']}_epoch_{epoch+1}.pt")
 
+    if not os.path.exists(f"{data_config['model_save_dir']}/embedding"):
+            os.makedirs(f"{data_config['model_save_dir']}/embedding")
+    torch.save(model.state_dict(), f"{data_config['model_save_dir']}/embedding/{data_config['variant']}_{model_config['encoder']}_final.pt")
+
 if __name__ == "__main__":
     main()
 
