@@ -288,7 +288,7 @@ def main():
         model.train()
 
         # Save Model
-        if (epoch+1) % data_config['model_save_freq']:
+        if (epoch+1) % data_config['model_save_freq'] == 0:
             if not os.path.exists(f"{data_config['model_save_dir']}/embedding"):
                 os.makedirs(f"{data_config['model_save_dir']}/embedding")
             torch.save(model.state_dict(), f"{data_config['model_save_dir']}/embedding/{data_config['variant']}_{model_config['encoder']}_epoch_{epoch+1}.pt")
