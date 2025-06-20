@@ -1,4 +1,3 @@
-cupy-cuda11x
 fastparquet
 kagglehub[pandas-datasets]
 nltk
